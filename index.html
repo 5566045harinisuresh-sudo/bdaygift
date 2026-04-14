@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYSTEM.exe</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Share Tech Mono', monospace;
+  background: radial-gradient(circle at center, #02040A, #000000);
+  color: #8B949E;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  transition: all 1s ease;
+}
+
+.container {
+  width: 95%;
+  max-width: 1000px;
+  text-align: left;
+}
+
+.line::after {
+  content: '|';
+  animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 2px);
+  animation: scanFlicker 120ms infinite;
+}
+@keyframes scanFlicker {
+  0% { opacity: .9; }
+  50% { opacity: .6; }
+  100% { opacity: .9; }
+}
+
+.glitchFlash {
+  position: fixed; inset:0; pointer-events:none;
+  mix-blend-mode: screen;
+  background: linear-gradient(90deg, rgba(255,0,0,0.15), rgba(0,255,255,0.15));
+  opacity: 0;
+  animation: flash 6s infinite;
+}
+@keyframes flash {
+  0%, 92%, 100% { opacity: 0; }
+  93% { opacity: .6; }
+  94% { opacity: 0; }
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #0A84FF;
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+.hidden { display: none; }
+
+.glitch {
+  position: relative;
+  color: #FF4D4D;
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0;
+}
+.glitch::before { color: #0ff; transform: translate(1px,0); opacity: 0.4; }
+.glitch::after { color: #f00; transform: translate(-1px,0); opacity: 0.4; }
+
+.soft {
+  background: radial-gradient(circle at center, #FFE4F1, #B5FFFC);
+  color: #4A2C3A;
+  font-family: 'Comic Sans MS', cursive;
+  text-align: center;
+}
+.soft button { background: #FF8FC7; color: white; }
+.soft .glitch, .soft .glitch::before, .soft .glitch::after {
+  animation: none;
+}
+
+.mix {
+  background: linear-gradient(135deg, #02040A, #FFDEE9);
+  color: #E6EDF3;
+}
+
+.globe {
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+}
+.inner {
+  position: absolute;
+  width: 2400px;
+  height: 1400px;
+}
+
+.card {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.card.ellipse { border-radius: 40% / 50%; }
+
+.card img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+}
+.card p {
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+/* CENTER CARD EXACT CENTER */
+.textCard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 180px;
+  border-radius: 20px;
+  background: #fff0f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  padding: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+textarea {
+  width: 80%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+</style>
+</head>
+<body>
+<div class="glitchFlash"></div>
+<div class="container">
+
+<div id="screen1">
+<p class="line">booting kernel...</p>
+<p class="line">injecting modules...</p>
+<p class="line">bypassing restrictions...</p>
+<p class="line">establishing remote link...</p>
+<p class="line">access granted</p>
+<p class="line">target: HERSHEY🍫✨</p>
+<p class="line">status: unstable anomaly</p>
+<button onclick="next(2)">> proceed</button>
+</div>
+
+<div id="screen2" class="hidden">
+<p>> scanning neural patterns...</p>
+<p>> anomaly spike detected</p>
+<p>> privilege escalation...</p>
+<p>> classification: unpredictable</p>
+<button onclick="next(3)">> access logs</button>
+</div>
+
+<div id="screen3" class="hidden">
+<p>> select log</p>
+<button onclick="next(4)">log_01</button>
+<button onclick="next(5)">log_02</button>
+<button onclick="next(6)">log_03</button>
+</div>
+
+<div id="screen4" class="hidden soft">
+<p>this one’s simple.</p>
+<p>Happy Birthday!...belated, didnt mean to keep it belated tho, yk,<br>
+   ..sorry..btw, our memories arent enough, <br>
+   we need to make more to tell our future kids<br>
+   of our idiocy when we're together</p>
+<button onclick="next(3)">back</button>
+</div>
+
+<div id="screen5" class="hidden soft">
+<p>this is everything.</p>
+<div class="globe" id="globe">
+<div class="inner" id="inner">
+
+<!-- 8 PHOTOS -->
+<div class="card" style="top:40px; left:60px"><img src="the pics/1.jpeg"><p>[memory]</p></div>
+<div class="card ellipse" style="top:200px; left:400px"><img src="the pics/2.jpeg"><p>[memory]</p></div>
+<div class="card" style="top:600px; left:200px"><img src="the pics/3.jpeg"><p>[memory]</p></div>
+<div class="card ellipse" style="top:300px; left:900px"><img src="the pics/4.jpeg"><p>[memory]</p></div>
+<div class="card" style="top:900px; left:700px"><img src="the pics/5.jpeg"><p>[memory]</p></div>
+<div class="card ellipse" style="top:100px; left:1300px"><img src="the pics/6.jpeg"><p>[memory]</p></div>
+<div class="card" style="top:800px; left:1400px"><img src="the pics/7.jpeg"><p>[memory]</p></div>
+<div class="card ellipse" style="top:500px; left:1600px"><img src="the pics/8.jpeg"><p>[memory]</p></div>
+
+<!-- CENTER MESSAGE -->
+<div class="textCard">
+<p><b>this is what you did to my world.
+it used to be structured.
+now it’s you.</b><br>
+[btw, nothing borrowed, nothing blue, 
+everything here...lived by us, made by us, for us. so it’s ours.]<br>
+<b>Conclusion : we need to take more photos  </b></p>
+</div>
+
+</div>
+</div>
+<button onclick="next(3)">back</button>
+</div>
+
+<div id="screen6" class="hidden soft">
+<p class="glitch" data-text="error: system override">error: system override</p>
+<p>you weren’t supposed to matter.</p>
+<p>but you do.</p>
+<button onclick="next(7)">continue</button>
+</div>
+
+<div id="screen7" class="hidden mix">
+<p>how are you feeling?</p>
+<textarea id="feeling"></textarea><br>
+<button onclick="sendData()">submit</button>
+</div>
+
+<div id="screen8" class="hidden mix">
+<p>received.</p>
+<p>system altered.</p>
+<p>you stayed.</p>
+</div>
+
+</div>
+
+<script>
+let isDown=false, startX, startY;
+const globe=document.getElementById('globe');
+const inner=document.getElementById('inner');
+
+if(globe){
+  globe.addEventListener('mousedown',e=>{
+    isDown=true;
+    startX=e.pageX - (inner.offsetLeft||0);
+    startY=e.pageY - (inner.offsetTop||0);
+    globe.style.cursor='grabbing';
+  });
+}
+
+document.addEventListener('mouseup',()=>{ isDown=false; if(globe) globe.style.cursor='grab'; });
+
+document.addEventListener('mousemove',e=>{
+  if(!isDown) return;
+  inner.style.left = (e.pageX-startX)+'px';
+  inner.style.top = (e.pageY-startY)+'px';
+});
+
+function next(screen){
+ document.querySelectorAll('.container > div').forEach(d=>d.classList.add('hidden'));
+ document.getElementById('screen'+screen).classList.remove('hidden');
+ document.body.classList.remove('soft','mix');
+ if(screen>=4 && screen<7) document.body.classList.add('soft');
+ if(screen>=7) document.body.classList.add('mix');
+}
+
+function sendData() {
+  const feeling = document.getElementById('feeling').value;
+
+  const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSc-3RhWs0W1xpbxRAsAdgFZrhPChXN3Pmoy-TAwiys2sY5w2A/viewform?usp=pp_url&entry.359237194=." + encodeURIComponent(feeling);
+
+  window.location.href = formURL;
+}
+</script>
+</body>
+</html>
