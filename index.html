@@ -249,6 +249,9 @@ everything here...lived by us, made by us, for us. so it’s ours.]<br>
 </div>
 
 <script>
+let isDown=false, startX, startY;
+const globe=document.getElementById('globe');
+const inner=document.getElementById('inner');
 
 if(globe){
   globe.addEventListener('mousedown',e=>{
@@ -267,25 +270,9 @@ document.addEventListener('mousemove',e=>{
   inner.style.top = (e.pageY-startY)+'px';
 });
 
-
 function next(screen){
  document.querySelectorAll('.container > div').forEach(d=>d.classList.add('hidden'));
- document.getElementById('screen'+screen).classList.remove('hidden');THIS IS MY CURRENT CODE if(globe){
-  globe.addEventListener('mousedown',e=>{
-    isDown=true;
-    startX=e.pageX - (inner.offsetLeft||0);
-    startY=e.pageY - (inner.offsetTop||0);
-    globe.style.cursor='grabbing';
-  });
-}
-
-document.addEventListener('mouseup',()=>{ isDown=false; if(globe) globe.style.cursor='grab'; });
-
-document.addEventListener('mousemove',e=>{
-  if(!isDown) return;
-  inner.style.left = (e.pageX-startX)+'px';
-  inner.style.top = (e.pageY-startY)+'px';
-});
+ document.getElementById('screen'+screen).classList.remove('hidden');
  document.body.classList.remove('soft','mix');
  if(screen>=4 && screen<7) document.body.classList.add('soft');
  if(screen>=7) document.body.classList.add('mix');
