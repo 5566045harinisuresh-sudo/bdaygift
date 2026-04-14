@@ -103,6 +103,7 @@ button {
   overflow: hidden;
   position: relative;
   cursor: grab;
+  touch-action: none;
 }
 .inner {
   position: absolute;
@@ -249,26 +250,51 @@ everything here...lived by us, made by us, for us. so it’s ours.]<br>
 </div>
 
 <script>
-let isDown=false, startX, startY;
-const globe=document.getElementById('globe');
-const inner=document.getElementById('inner');
+if (globe) {
+  globe.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - (inner.offsetLeft || 0);
+    startY = e.pageY - (inner.offsetTop || 0);
+    globe.style.cursor = 'grabbing';
+  });
 
-if(globe){
-  globe.addEventListener('mousedown',e=>{
-    isDown=true;
-    startX=e.pageX - (inner.offsetLeft||0);
-    startY=e.pageY - (inner.offsetTop||0);
-    globe.style.cursor='grabbing';
+  // ✅ ADD TOUCH START
+  globe.addEventListener('touchstart', (e) => {
+    isDown = true;
+    const t = e.touches[0];
+    startX = t.pageX - (inner.offsetLeft || 0);
+    startY = t.pageY - (inner.offsetTop || 0);
   });
 }
 
-document.addEventListener('mouseup',()=>{ isDown=false; if(globe) globe.style.cursor='grab'; });
-
-document.addEventListener('mousemove',e=>{
-  if(!isDown) return;
-  inner.style.left = (e.pageX-startX)+'px';
-  inner.style.top = (e.pageY-startY)+'px';
+// mouse up
+document.addEventListener('mouseup', () => {
+  isDown = false;
+  if (globe) globe.style.cursor = 'grab';
 });
+
+// touch end
+document.addEventListener('touchend', () => {
+  isDown = false;
+  if (globe) globe.style.cursor = 'grab';
+});
+
+// mouse move
+document.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  inner.style.left = (e.pageX - startX) + 'px';
+  inner.style.top = (e.pageY - startY) + 'px';
+});
+
+// ✅ touch move
+document.addEventListener('touchmove', (e) => {
+  if (!isDown) return;
+  const t = e.touches[0];
+  inner.style.left = (t.pageX - startX) + 'px';
+  inner.style.top = (t.pageY - startY) + 'px';
+});
+
+globe.style.touchAction = "none";
 
 function next(screen){
  document.querySelectorAll('.container > div').forEach(d=>d.classList.add('hidden'));
