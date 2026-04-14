@@ -290,10 +290,6 @@ document.addEventListener('pointermove', (e) => {
   inner.style.top = (e.clientY - startY) + 'px';
 });
 
-.globe {
-  cursor: grab;
-  touch-action: none; /* VERY IMPORTANT for mobile drag */
-}
 
 function next(screen){
  document.querySelectorAll('.container > div').forEach(d=>d.classList.add('hidden'));
