@@ -257,39 +257,54 @@ let isDown = false;
 let startX = 0;
 let startY = 0;
 
-if (globe) {
-  globe.style.cursor = 'grab';
+let isDown = false;
+let startX = 0;
+let startY = 0;
+let hasMoved = false;
 
-  globe.addEventListener('pointerdown', (e) => {
-    isDown = true;
+function startDrag(e) {
+  isDown = true;
+  hasMoved = false;
 
-    startX = e.clientX - (inner.offsetLeft || 0);
-    startY = e.clientY - (inner.offsetTop || 0);
-
-    globe.style.cursor = 'grabbing';
-
-    // keeps drag consistent on mobile
-    globe.setPointerCapture(e.pointerId);
-  });
-
-  globe.addEventListener('pointerup', () => {
-    isDown = false;
-    globe.style.cursor = 'grab';
-  });
-
-  globe.addEventListener('pointercancel', () => {
-    isDown = false;
-    globe.style.cursor = 'grab';
-  });
+  startX = e.clientX - (inner.offsetLeft || 0);
+  startY = e.clientY - (inner.offsetTop || 0);
 }
 
-document.addEventListener('pointermove', (e) => {
+function moveDrag(e) {
   if (!isDown) return;
+
+  hasMoved = true;
 
   inner.style.left = (e.clientX - startX) + 'px';
   inner.style.top = (e.clientY - startY) + 'px';
-});
+}
 
+function endDrag() {
+  isDown = false;
+}
+
+// Mouse
+globe?.addEventListener('mousedown', startDrag);
+document.addEventListener('mousemove', moveDrag);
+document.addEventListener('mouseup', endDrag);
+
+// Touch (IMPORTANT FIX)
+globe?.addEventListener('touchstart', (e) => {
+  const t = e.touches[0];
+  startDrag({ clientX: t.clientX, clientY: t.clientY });
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+  if (!isDown) return;
+  const t = e.touches[0];
+  moveDrag({ clientX: t.clientX, clientY: t.clientY });
+}, { passive: true });
+
+document.addEventListener('touchend', endDrag);
+
+.globe {
+  cursor: grab;
+}
 
 function next(screen){
  document.querySelectorAll('.container > div').forEach(d=>d.classList.add('hidden'));
