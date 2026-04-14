@@ -253,22 +253,47 @@ let isDown=false, startX, startY;
 const globe=document.getElementById('globe');
 const inner=document.getElementById('inner');
 
-if(globe){
-  globe.addEventListener('mousedown',e=>{
-    isDown=true;
-    startX=e.pageX - (inner.offsetLeft||0);
-    startY=e.pageY - (inner.offsetTop||0);
-    globe.style.cursor='grabbing';
+let isDown = false;
+let startX = 0;
+let startY = 0;
+
+if (globe) {
+  globe.style.cursor = 'grab';
+
+  globe.addEventListener('pointerdown', (e) => {
+    isDown = true;
+
+    startX = e.clientX - (inner.offsetLeft || 0);
+    startY = e.clientY - (inner.offsetTop || 0);
+
+    globe.style.cursor = 'grabbing';
+
+    // keeps drag consistent on mobile
+    globe.setPointerCapture(e.pointerId);
+  });
+
+  globe.addEventListener('pointerup', () => {
+    isDown = false;
+    globe.style.cursor = 'grab';
+  });
+
+  globe.addEventListener('pointercancel', () => {
+    isDown = false;
+    globe.style.cursor = 'grab';
   });
 }
 
-document.addEventListener('mouseup',()=>{ isDown=false; if(globe) globe.style.cursor='grab'; });
+document.addEventListener('pointermove', (e) => {
+  if (!isDown) return;
 
-document.addEventListener('mousemove',e=>{
-  if(!isDown) return;
-  inner.style.left = (e.pageX-startX)+'px';
-  inner.style.top = (e.pageY-startY)+'px';
+  inner.style.left = (e.clientX - startX) + 'px';
+  inner.style.top = (e.clientY - startY) + 'px';
 });
+
+.globe {
+  cursor: grab;
+  touch-action: none; /* VERY IMPORTANT for mobile drag */
+}
 
 function next(screen){
  document.querySelectorAll('.container > div').forEach(d=>d.classList.add('hidden'));
